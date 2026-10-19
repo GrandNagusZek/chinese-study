@@ -1,0 +1,99 @@
+---
+layout: default
+title: 首页
+permalink: /
+---
+{% assign ordered = site.lessons | sort: "date" | reverse %}
+{% assign today = site.time | date: "%Y-%m-%d" %}
+{% assign past = ordered | where_exp: "item", "item.date <= site.time" %}
+{% assign current = past | first %}
+{% unless current %}
+  {% assign current = ordered | first %}
+{% endunless %}
+{% assign active_focus = site.data.focus | where: "status", "active" %}
+
+<div class="dashboard">
+  <div class="dashboard-main">
+    {% if current %}
+      {% assign current_day = current.date | date: "%Y-%m-%d" %}
+      {% assign current_words = site.data.vocab | where: "lesson", current.lesson_id %}
+      <section class="hero" aria-labelledby="today-heading">
+        <p class="kicker" id="today-kicker">{% if current_day == today %}今日课程{% else %}最近一课{% endif %}</p>
+        <h1 id="today-heading"><a href="{{ current.url | relative_url }}">{{ current.title }}</a></h1>
+        <p class="meta">
+          <time datetime="{{ current_day }}">{{ current_day }}</time>
+          {% if current.summary %}<span class="summary">{{ current.summary }}</span>{% endif %}
+        </p>
+        {% if current_words.size > 0 %}
+        <ul class="chip-row">
+          {% for word in current_words %}
+          <li><a class="chip" href="{{ current.url | relative_url }}#words">{{ word.hanzi }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        <p class="hero-actions"><a class="button" href="{{ current.url | relative_url }}">进入这一课</a></p>
+      </section>
+    {% else %}
+      <section class="hero">
+        <h1>日课</h1>
+        <p class="summary">还没有课程。把第一篇放进 <code>_lessons/</code> 即可。</p>
+      </section>
+    {% endif %}
+
+    <section class="panel" aria-labelledby="recent-heading">
+      <h2 id="recent-heading">最近的课</h2>
+      {% if ordered.size > 0 %}
+      <ol class="lesson-index">
+        {% for lesson in ordered limit: 6 %}
+        <li>
+          <time datetime="{{ lesson.date | date: '%Y-%m-%d' }}">{{ lesson.date | date: "%Y-%m-%d" }}</time>
+          <a href="{{ lesson.url | relative_url }}">{{ lesson.title }}</a>
+          {% if current and lesson.lesson_id == current.lesson_id %}<span class="pill">当前</span>{% endif %}
+          {% if lesson.summary %}<p>{{ lesson.summary }}</p>{% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+      {% else %}
+      <p class="empty">还没有课程。</p>
+      {% endif %}
+      <p class="more"><a href="{{ '/lessons/' | relative_url }}">课程存档</a></p>
+    </section>
+  </div>
+
+  <aside class="dashboard-side">
+    <section class="panel" aria-labelledby="stats-heading">
+      <h2 id="stats-heading" class="visually-hidden">进度</h2>
+      <dl class="stats">
+        <div>
+          <dt>课程</dt>
+          <dd>{{ site.lessons | size }}</dd>
+        </div>
+        <div>
+          <dt>生词</dt>
+          <dd>{{ site.data.vocab | size }}</dd>
+        </div>
+        <div>
+          <dt>薄弱点</dt>
+          <dd>{{ active_focus | size }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel" aria-labelledby="focus-heading">
+      <h2 id="focus-heading">薄弱点</h2>
+      {% if active_focus.size > 0 %}
+      <ul class="focus-list">
+        {% for item in active_focus %}
+        <li>
+          <a href="{{ '/focus/' | relative_url }}#{{ item.id }}">{{ item.title }}</a>
+          <p>{{ item.summary }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="empty">目前没有正在追踪的薄弱点。</p>
+      {% endif %}
+      <p class="more"><a href="{{ '/focus/' | relative_url }}">全部薄弱点</a></p>
+    </section>
+  </aside>
+</div>

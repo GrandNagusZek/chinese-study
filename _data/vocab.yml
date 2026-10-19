@@ -1,0 +1,100 @@
+# Append new words at the end of this list. Do not reorder old entries.
+# lesson must match the lesson file's lesson_id (filename without .md).
+# date is the day the word was added, quoted YYYY-MM-DD.
+# tags to reuse: near-synonym, collocation, complement, 文言
+
+- hanzi: "沟通"
+  pinyin: "gōutōng"
+  gloss: "getting through to each other; resolving a misunderstanding"
+  example: "两个部门之间缺乏沟通，项目才一再延误。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["near-synonym"]
+
+- hanzi: "交流"
+  pinyin: "jiāoliú"
+  gloss: "exchanging ideas, information, or culture"
+  example: "这次展览办的是文化交流，双方把各自的看法拿出来交换。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["near-synonym"]
+
+- hanzi: "改进"
+  pinyin: "gǎijìn"
+  gloss: "to improve a method, technique, or process"
+  example: "工厂改进了生产工艺，效率提高了三成。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["near-synonym"]
+
+- hanzi: "改善"
+  pinyin: "gǎishàn"
+  gloss: "to improve conditions, life, or a relationship"
+  example: "宿舍条件改善了，同事之间的关系也慢慢改善了。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["near-synonym"]
+
+- hanzi: "想出来"
+  pinyin: "xiǎng chūlái"
+  gloss: "to come up with something, such as an answer or an idea"
+  example: "这道题我想了半天也没想出来。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["complement"]
+
+- hanzi: "想通"
+  pinyin: "xiǎngtōng"
+  gloss: "to finally make sense of something"
+  example: "他把原因说了两遍，我才想通问题出在哪儿。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["complement"]
+
+- hanzi: "想开"
+  pinyin: "xiǎngkāi"
+  gloss: "to get over something emotionally; to stop taking it to heart"
+  example: "事情已经过去了，要想开一点，别老放在心上。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["complement"]
+
+- hanzi: "促进健康"
+  pinyin: "cùjìn jiànkāng"
+  gloss: "to promote health"
+  example: "睡得规律，才谈得上促进健康。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["collocation"]
+
+- hanzi: "增进健康"
+  pinyin: "zēngjìn jiànkāng"
+  gloss: "to improve one's health"
+  example: "每天走半小时路，可以增进健康。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["collocation"]
+
+- hanzi: "强身健体"
+  pinyin: "qiángshēn jiàntǐ"
+  gloss: "to strengthen the body (written register)"
+  example: "形意拳能强身健体，调养精神，培养内气。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["collocation"]
+
+- hanzi: "真意"
+  pinyin: "zhēnyì"
+  gloss: "true intent; the intent that shows itself without being forced"
+  example: "拳谱说「无意之中是真意」。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: ["文言"]
+
+- hanzi: "刻意"
+  pinyin: "kèyì"
+  gloss: "deliberate; done on purpose"
+  example: "练到后来，招式不再是刻意做出来的。"
+  date: "2026-10-18"
+  lesson: "2026-10-18-warmup"
+  tags: []

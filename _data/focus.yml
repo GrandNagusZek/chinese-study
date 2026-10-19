@@ -1,0 +1,30 @@
+# Append a new weak point at the end. id is a short ASCII slug for the page anchor.
+# status: active (shown on the home page) or resolved (kept here, hidden from home).
+
+- id: complements
+  title: "出来、起来、通、开"
+  summary: "同一个动词后面，这几个补语并不互换。"
+  status: active
+  since: "2026-10-18"
+  notes: |
+    以「想」为例：这道题我想了半天也没想\_\_\_。
+
+    - **想出来**：答案或办法被想了出来。这个空里最贴。
+    - **想通**：原先拧着的道理想明白了。这个空里也说得通。
+    - **想开**：情绪上放下，不是把题目做出来。意思变了。
+    - **想起来**：回忆起忘掉的事。意思变了。
+    - **没想到**：通常是「没预料到」，不是这个空要的补语。
+
+    出来、起来是趋向补语。通、开在这里是结果补语。
+
+- id: health-collocations
+  title: "「健康」不要配「提高」"
+  summary: "提高跟可以衡量的事物走；健康用促进、增进、有益于。"
+  status: active
+  since: "2026-10-18"
+  notes: |
+    「提高」搭配水平、能力、效率这一类可以衡量的事物。
+
+    健康不说「提高健康」。要说促进健康、增进健康、有益于健康，或者「对健康有好处」。
+
+    书面一点可以说强身健体。泛泛的「你的气」像把英语 your qi 直接搬过来，这里说「气」或「内气」就够。

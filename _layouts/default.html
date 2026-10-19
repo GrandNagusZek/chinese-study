@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+{% include head.html %}
+<body>
+  <a class="skip" href="#content">跳到正文</a>
+  {% include header.html %}
+  <main id="content" class="shell">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  {% if page.script == "review" %}
+  {% include study-data.html %}
+  <script src="{{ '/assets/js/review.js' | relative_url }}"></script>
+  {% endif %}
+  {% if page.script == "vocab" %}
+  <script src="{{ '/assets/js/vocab.js' | relative_url }}"></script>
+  {% endif %}
+  <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
+</body>
+</html>

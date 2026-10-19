@@ -1,0 +1,81 @@
+---
+layout: default
+title: 闪卡
+permalink: /review/
+script: review
+---
+{% assign ordered = site.lessons | sort: "date" | reverse %}
+{% assign tag_blob = "" %}
+{% for word in site.data.vocab %}
+  {% for tag in word.tags %}
+    {% assign tag_blob = tag_blob | append: tag | append: "|" %}
+  {% endfor %}
+{% endfor %}
+{% assign tag_list = tag_blob | split: "|" | uniq | sort %}
+
+<header class="page-head">
+  <h1>闪卡</h1>
+  <p class="summary">汉字和意思两个方向。认识与否只记在这台浏览器的 localStorage 里，换一台电脑就没有了。</p>
+</header>
+
+<section class="review" id="review-app">
+  <div class="review-toolbar">
+    <label>方向
+      <select id="review-dir">
+        <option value="hanzi">看汉字，说意思</option>
+        <option value="gloss">看意思，写汉字</option>
+      </select>
+    </label>
+    <label>范围
+      <select id="review-scope">
+        <option value="all">全部生词</option>
+        {% if ordered.size > 0 %}
+        <optgroup label="按课文">
+          {% for lesson in ordered %}
+          <option value="lesson:{{ lesson.lesson_id }}">{{ lesson.date | date: "%Y-%m-%d" }} {{ lesson.title }}</option>
+          {% endfor %}
+        </optgroup>
+        {% endif %}
+        {% if tag_list.size > 0 %}
+        <optgroup label="按标签">
+          {% for tag in tag_list %}
+            {% if tag != "" %}
+            <option value="tag:{{ tag }}">{{ tag }}</option>
+            {% endif %}
+          {% endfor %}
+        </optgroup>
+        {% endif %}
+      </select>
+    </label>
+  </div>
+
+  <p class="review-progress" id="review-progress" aria-live="polite"></p>
+
+  <div class="flashcard" id="flashcard">
+    <button type="button" class="card-face" id="card-flip">
+      <span class="card-kicker" id="card-kicker"></span>
+      <span class="card-prompt hanzi" id="card-prompt"></span>
+      <span class="card-answer" id="card-answer" hidden></span>
+    </button>
+  </div>
+
+  <div class="review-actions">
+    <button type="button" id="review-show">看答案</button>
+    <button type="button" class="secondary" id="review-no" hidden>不认识</button>
+    <button type="button" id="review-yes" hidden>认识</button>
+    <button type="button" class="secondary" id="review-again" hidden>再来一轮</button>
+  </div>
+  <p class="review-keys">空格翻面。翻开以后，按 1 不认识，按 2 认识。</p>
+
+  <p class="empty" id="review-empty" hidden>这个范围里没有生词。</p>
+
+  <section class="panel review-stats" aria-labelledby="stats-title">
+    <h2 id="stats-title">这台浏览器里的进度</h2>
+    <p id="review-stats"></p>
+    <button type="button" class="secondary" id="review-reset">清除进度</button>
+  </section>
+</section>
+
+<noscript>
+  <p class="empty">闪卡需要 JavaScript。生词表在<a href="{{ '/vocab/' | relative_url }}">词汇</a>页，不依赖脚本也能看。</p>
+</noscript>

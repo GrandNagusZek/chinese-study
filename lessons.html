@@ -1,0 +1,27 @@
+---
+layout: default
+title: 课程
+permalink: /lessons/
+---
+{% assign ordered = site.lessons | sort: "date" | reverse %}
+
+<header class="page-head">
+  <h1>课程</h1>
+  <p class="summary">按日期排列，新的在前。每一课是 <code>_lessons/</code> 里的一个文件。</p>
+</header>
+
+{% if ordered.size > 0 %}
+<ol class="lesson-index lesson-archive">
+  {% for lesson in ordered %}
+  {% assign words = site.data.vocab | where: "lesson", lesson.lesson_id %}
+  <li>
+    <time datetime="{{ lesson.date | date: '%Y-%m-%d' }}">{{ lesson.date | date: "%Y-%m-%d" }}</time>
+    <a href="{{ lesson.url | relative_url }}">{{ lesson.title }}</a>
+    <span class="pill">{{ words | size }} 个生词</span>
+    {% if lesson.summary %}<p>{{ lesson.summary }}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+<p class="empty">还没有课程。</p>
+{% endif %}
