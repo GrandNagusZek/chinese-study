@@ -1,0 +1,17 @@
+<article class="word-card">
+  <header class="word-head">
+    <h3 class="hanzi">{{ include.word.hanzi }}</h3>
+    <p class="pinyin">{{ include.word.pinyin }}</p>
+  </header>
+  <p class="gloss" lang="en">{{ include.word.gloss }}</p>
+  {% if include.word.example %}
+  <p class="example">{{ include.word.example }}</p>
+  {% endif %}
+  {% if include.word.tags and include.word.tags.size > 0 %}
+  <ul class="tags">
+    {% for tag in include.word.tags %}
+    <li>{{ tag }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</article>

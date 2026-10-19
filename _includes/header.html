@@ -1,0 +1,22 @@
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <span class="seal" aria-hidden="true">课</span>
+      <span class="brand-text">
+        <span class="brand-name">日课</span>
+        <span class="brand-sub">中文笔记</span>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="页面">
+      <a href="{{ '/' | relative_url }}" {% if page.url == "/" %}aria-current="page"{% endif %}>首页</a>
+      <a href="{{ '/lessons/' | relative_url }}" {% if page.url == "/lessons/" or page.collection == "lessons" %}aria-current="page"{% endif %}>课程</a>
+      <a href="{{ '/vocab/' | relative_url }}" {% if page.url == "/vocab/" %}aria-current="page"{% endif %}>词汇</a>
+      <a href="{{ '/focus/' | relative_url }}" {% if page.url == "/focus/" %}aria-current="page"{% endif %}>薄弱点</a>
+      <a href="{{ '/review/' | relative_url }}" {% if page.url == "/review/" %}aria-current="page"{% endif %}>闪卡</a>
+    </nav>
+    <button type="button" id="theme-toggle" aria-label="切换深色或浅色">
+      <span class="when-light">深色</span>
+      <span class="when-dark">浅色</span>
+    </button>
+  </div>
+</header>

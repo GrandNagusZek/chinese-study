@@ -1,0 +1,11 @@
+<script>
+  window.STUDY = {
+    vocab: {{ site.data.vocab | jsonify | replace: "<", "\u003c" }},
+    lessons: [
+      {% assign lesson_docs = site.lessons | sort: "date" %}
+      {% for lesson in lesson_docs %}
+      {"id":{{ lesson.lesson_id | jsonify }},"title":{{ lesson.title | jsonify | replace: "<", "\u003c" }},"date":{{ lesson.date | date: "%Y-%m-%d" | jsonify }}}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  };
+</script>

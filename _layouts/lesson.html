@@ -1,0 +1,34 @@
+---
+layout: default
+---
+{% assign words = site.data.vocab | where: "lesson", page.lesson_id %}
+<article class="lesson">
+  <header class="lesson-hero">
+    <p class="kicker">
+      <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+    </p>
+    <h1>{{ page.title }}</h1>
+    {% if page.summary %}
+    <p class="summary">{{ page.summary }}</p>
+    {% endif %}
+  </header>
+
+  <section class="lesson-words" id="words" aria-labelledby="words-heading">
+    <h2 id="words-heading">生词</h2>
+    {% if words.size > 0 %}
+    <div class="word-list">
+      {% for word in words %}
+      {% include word-card.html word=word %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">这一课还没有挂上生词。在 <code>_data/vocab.yml</code> 里把 <code>lesson</code> 写成 <code>{{ page.lesson_id }}</code>。</p>
+    {% endif %}
+  </section>
+
+  <div class="lesson-body prose">
+    {{ content }}
+  </div>
+
+  <p class="back-link"><a href="{{ '/lessons/' | relative_url }}">全部课程</a></p>
+</article>

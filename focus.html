@@ -1,0 +1,36 @@
+---
+layout: default
+title: 薄弱点
+permalink: /focus/
+---
+
+<header class="page-head">
+  <h1>薄弱点</h1>
+  <p class="summary">还容易混的地方。条目在 <code>_data/focus.yml</code>。标成 resolved 的会留在这里，不再出现在首页。</p>
+</header>
+
+{% if site.data.focus.size > 0 %}
+<div class="focus-page">
+  {% for item in site.data.focus %}
+  <article class="focus-card" id="{{ item.id }}">
+    <header class="focus-card-head">
+      <h2>{{ item.title }}</h2>
+      {% if item.status == "resolved" %}
+      <span class="pill">已放下</span>
+      {% else %}
+      <span class="pill pill-live">在练</span>
+      {% endif %}
+    </header>
+    <p class="meta">
+      {% if item.since %}<time datetime="{{ item.since }}">自 {{ item.since }}</time>{% endif %}
+    </p>
+    {% if item.summary %}<p class="summary">{{ item.summary }}</p>{% endif %}
+    {% if item.notes %}
+    <div class="prose focus-notes">{{ item.notes | markdownify }}</div>
+    {% endif %}
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty">还没有薄弱点。</p>
+{% endif %}

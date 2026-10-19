@@ -1,0 +1,33 @@
+title: 日课
+description: 每天一课的中文笔记。生词、搭配、语体，以及形意拳文稿。
+lang: zh-Hans
+# Project site. If the repository is renamed, change baseurl to /<repo-name>.
+url: https://grandnaguszek.github.io
+baseurl: /chinese-study
+timezone: Asia/Shanghai
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+permalink: pretty
+encoding: utf-8
+
+collections:
+  lessons:
+    output: true
+    permalink: /lessons/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: lessons
+    values:
+      layout: lesson
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle
+  - node_modules
