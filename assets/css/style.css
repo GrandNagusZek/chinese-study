@@ -276,10 +276,12 @@ button.secondary, .review-actions button.secondary, #review-reset.secondary {
 .panel { padding: 1rem 1.1rem 0.9rem; margin-top: 1rem; }
 .dashboard-side .panel:first-child { margin-top: 0; }
 
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 0; }
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem 0.5rem; margin: 0; }
 .stats div { text-align: center; }
 .stats dt { color: var(--muted); font-size: 0.85rem; }
 .stats dd { margin: 0; font-family: var(--hanzi); font-size: 1.6rem; }
+.stats dd a { text-decoration: none; }
+.stat-note { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.78rem; }
 
 .lesson-index { list-style: none; margin: 0; padding: 0; }
 .lesson-index li {
@@ -421,6 +423,7 @@ details.reveal .answer p:first-child { margin-top: 0; }
 }
 #vocab-search { min-width: min(100%, 16rem); flex: 1; }
 .tag-filters { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+[hidden] { display: none !important; }
 .tag-filters button {
   background: transparent;
   color: var(--ink);
@@ -452,8 +455,30 @@ th button {
   cursor: pointer;
 }
 td.hanzi { font-size: 1.35rem; white-space: nowrap; }
+td.trad { color: var(--muted); font-family: var(--hanzi); font-size: 1.15rem; white-space: nowrap; }
 td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row-example, .row-tags { display: block; margin-top: 0.2rem; color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
 tbody tr:last-child td { border-bottom: 0; }
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+}
+.pager button {
+  font: inherit;
+  min-width: 6rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  min-height: 2.5rem;
+  cursor: pointer;
+}
+.pager button:disabled { opacity: 0.45; cursor: default; }
+#page-status { color: var(--muted); font-variant-numeric: tabular-nums; }
 
 .review { max-width: 40rem; }
 .review-toolbar { display: flex; flex-wrap: wrap; gap: 0.8rem 1rem; margin-bottom: 0.8rem; }
@@ -484,6 +509,8 @@ tbody tr:last-child td { border-bottom: 0; }
 .card-answer { max-width: 32rem; }
 .card-answer span { display: block; }
 .card-answer .hanzi { font-size: 2.2rem; }
+.card-answer .trad, td.trad { font-weight: 400; }
+.card-answer .trad { color: var(--muted); font-family: var(--hanzi); font-size: 1.25rem; }
 .card-answer .tags-inline { color: var(--muted); font-size: 0.85rem; }
 .card-answer .gloss { font-size: 1.15rem; }
 .review-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }

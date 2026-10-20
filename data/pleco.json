@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /data/pleco.json
+---
+{{ site.data.pleco | jsonify }}

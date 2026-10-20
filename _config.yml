@@ -31,3 +31,4 @@ exclude:
   - vendor
   - .bundle
   - node_modules
+  - scripts

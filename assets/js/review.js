@@ -1,6 +1,11 @@
 (function () {
   var data = window.STUDY || { vocab: [], lessons: [] };
-  var vocab = data.vocab || [];
+  var vocab = (data.vocab || []).map(function (word) {
+    word.source = "lesson";
+    word.hsk = 0;
+    word.traditional = word.traditional || "";
+    return word;
+  });
   var KEY = "zh-study-review-v1";
 
   var dirSelect = document.getElementById("review-dir");
@@ -22,6 +27,7 @@
   if (!dirSelect || !card) return;
 
   var queue = [];
+  var sharedHanzi = {};
   var index = 0;
   var revealed = false;
   var finished = false;
@@ -47,8 +53,13 @@
     } catch (e) {}
   }
 
+  function entryId(word) {
+    if (word.id) return word.id;
+    return (word.hanzi || "") + "|" + (word.pinyin || "");
+  }
+
   function cardId(word, dir) {
-    return word.hanzi + "::" + dir;
+    return entryId(word) + "::" + dir;
   }
 
   function shuffle(list) {
@@ -63,14 +74,21 @@
   }
 
   function filtered() {
-    var scope = scopeSelect.value || "all";
+    var scope = scopeSelect.value || "default";
     return vocab.filter(function (word) {
       if (!word || !word.hanzi) return false;
+      if (scope === "default") return word.source === "lesson" || word.source === "saved";
+      if (scope === "lesson") return word.source === "lesson";
+      if (scope === "saved") return word.source === "saved";
+      if (scope === "hsk") return word.source === "hsk";
+      if (scope.indexOf("hsk:") === 0) {
+        return word.source === "hsk" && String(word.hsk) === scope.slice(4);
+      }
       if (scope === "all") return true;
       if (scope.indexOf("lesson:") === 0) return word.lesson === scope.slice(7);
       if (scope.indexOf("tag:") === 0) {
         var tag = scope.slice(4);
-        return (word.tags || []).indexOf(tag) !== -1;
+        return word.source === "lesson" && (word.tags || []).indexOf(tag) !== -1;
       }
       return true;
     });
@@ -134,7 +152,11 @@
     setHidden(answer, true);
     answer.innerHTML = "";
 
-    kicker.textContent = dir === "hanzi" ? "说出意思" : "写出汉字";
+    if (dir === "hanzi" && sharedHanzi[word.hanzi]) {
+      kicker.textContent = "说出意思 · " + (word.pinyin || "");
+    } else {
+      kicker.textContent = dir === "hanzi" ? "说出意思" : "写出汉字";
+    }
     prompt.textContent = dir === "hanzi" ? word.hanzi : word.gloss;
     prompt.classList.toggle("is-gloss", dir !== "hanzi");
     prompt.classList.toggle("hanzi", dir === "hanzi");
@@ -149,11 +171,17 @@
     revealed = true;
     var tags = (word.tags || []).join(" · ");
     var hanziBlock = '<span class="hanzi">' + escapeHtml(word.hanzi) + "</span>";
+    if (word.traditional) {
+      hanziBlock += '<span class="trad">' + escapeHtml(word.traditional) + "</span>";
+    }
     var pinyinBlock = '<span class="pinyin">' + escapeHtml(word.pinyin) + "</span>";
     var glossBlock = '<span class="gloss" lang="en">' + escapeHtml(word.gloss) + "</span>";
     var exampleBlock = word.example ? '<span class="example">' + escapeHtml(word.example) + "</span>" : "";
     var tagBlock = tags ? '<span class="tags-inline">' + escapeHtml(tags) + "</span>" : "";
-    answer.innerHTML = [dir === "hanzi" ? glossBlock : hanziBlock, pinyinBlock, exampleBlock, tagBlock].join("");
+    var tradBlock = dir === "hanzi" && word.traditional
+      ? '<span class="trad">' + escapeHtml(word.traditional) + "</span>"
+      : "";
+    answer.innerHTML = [dir === "hanzi" ? glossBlock : hanziBlock, tradBlock, pinyinBlock, exampleBlock, tagBlock].join("");
     setHidden(answer, false);
     setHidden(showBtn, true);
     setHidden(noBtn, false);
@@ -185,6 +213,12 @@
 
   function start() {
     queue = shuffle(filtered());
+    sharedHanzi = {};
+    var seenHanzi = {};
+    queue.forEach(function (word) {
+      if (seenHanzi[word.hanzi]) sharedHanzi[word.hanzi] = true;
+      seenHanzi[word.hanzi] = true;
+    });
     index = 0;
     repeated = {};
     roundSeen = 0;
@@ -232,6 +266,37 @@
     renderStats();
   });
 
+  function addPleco(words) {
+    (words || []).forEach(function (word) {
+      vocab.push({
+        id: word.id || (word.hanzi + "|" + (word.pinyin || "")),
+        hanzi: word.hanzi,
+        traditional: word.traditional || "",
+        pinyin: word.pinyin || "",
+        gloss: word.gloss || "",
+        example: word.example || "",
+        tags: word.tags || [],
+        lesson: "",
+        source: word.kind === "saved" ? "saved" : "hsk",
+        hsk: word.hsk || 0
+      });
+    });
+  }
+
   renderStats();
-  start();
+  var plecoUrl = document.getElementById("review-app").getAttribute("data-pleco");
+  progress.textContent = "正在载入 Pleco…";
+  fetch(plecoUrl)
+    .then(function (response) {
+      if (!response.ok) throw new Error(String(response.status));
+      return response.json();
+    })
+    .then(function (payload) {
+      addPleco(payload && payload.words);
+      start();
+    })
+    .catch(function () {
+      progress.textContent = "Pleco 词库没有载入，先用课文生词。";
+      start();
+    });
 })();
