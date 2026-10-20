@@ -27,6 +27,7 @@
   if (!dirSelect || !card) return;
 
   var queue = [];
+  var sharedHanzi = {};
   var index = 0;
   var revealed = false;
   var finished = false;
@@ -52,8 +53,13 @@
     } catch (e) {}
   }
 
+  function entryId(word) {
+    if (word.id) return word.id;
+    return (word.hanzi || "") + "|" + (word.pinyin || "");
+  }
+
   function cardId(word, dir) {
-    return word.hanzi + "::" + dir;
+    return entryId(word) + "::" + dir;
   }
 
   function shuffle(list) {
@@ -146,7 +152,11 @@
     setHidden(answer, true);
     answer.innerHTML = "";
 
-    kicker.textContent = dir === "hanzi" ? "说出意思" : "写出汉字";
+    if (dir === "hanzi" && sharedHanzi[word.hanzi]) {
+      kicker.textContent = "说出意思 · " + (word.pinyin || "");
+    } else {
+      kicker.textContent = dir === "hanzi" ? "说出意思" : "写出汉字";
+    }
     prompt.textContent = dir === "hanzi" ? word.hanzi : word.gloss;
     prompt.classList.toggle("is-gloss", dir !== "hanzi");
     prompt.classList.toggle("hanzi", dir === "hanzi");
@@ -203,6 +213,12 @@
 
   function start() {
     queue = shuffle(filtered());
+    sharedHanzi = {};
+    var seenHanzi = {};
+    queue.forEach(function (word) {
+      if (seenHanzi[word.hanzi]) sharedHanzi[word.hanzi] = true;
+      seenHanzi[word.hanzi] = true;
+    });
     index = 0;
     repeated = {};
     roundSeen = 0;
@@ -253,6 +269,7 @@
   function addPleco(words) {
     (words || []).forEach(function (word) {
       vocab.push({
+        id: word.id || (word.hanzi + "|" + (word.pinyin || "")),
         hanzi: word.hanzi,
         traditional: word.traditional || "",
         pinyin: word.pinyin || "",

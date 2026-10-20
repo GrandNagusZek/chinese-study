@@ -181,8 +181,9 @@ What it keeps, per card:
 
 Deduping:
 
-- a headword already in `_data/vocab.yml` is skipped
-- two Pleco cards with the same simplified headword become one card (a self-saved card wins over an HSK-list card; otherwise the earlier `created` time wins)
+- every reading of a headword already in `_data/vocab.yml` is skipped
+- the same simplified headword with a different reading is kept, so 长 cháng and 长 zhǎng each keep their own gloss and example
+- two cards with the same headword and the same reading become one card (a self-saved card wins over an HSK-list card; otherwise the earlier `created` time wins)
 
 Check the converter without an export:
 

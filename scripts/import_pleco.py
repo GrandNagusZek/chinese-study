@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Import a Pleco 2.0 flashcard XML export into _data/pleco.json.
 
-The hand-curated lesson list in _data/vocab.yml is left alone. Headwords
-already in that file are skipped. Re-running replaces _data/pleco.json.
+The hand-curated lesson list in _data/vocab.yml is left alone. Every reading
+of a headword already in that file is skipped. Within the export, the same
+simplified headword with a different reading is kept; only an exact
+headword-plus-reading repeat is collapsed. Re-running replaces _data/pleco.json.
 
     python3 scripts/import_pleco.py path/to/export.xml
     python3 scripts/import_pleco.py --self-test
@@ -534,6 +536,7 @@ def _card_record(card: ET.Element) -> dict | None:
     level = _hsk_level(card)
     pinyin, problems = tone_numbers_to_marks(pron)
     record = {
+        "id": f"{simplified}|{pinyin}",
         "hanzi": simplified,
         "pinyin": pinyin,
         "gloss": short_gloss(defn),
@@ -565,24 +568,27 @@ def import_cards(xml_path: Path, vocab_path: Path) -> dict:
     lesson = lesson_headwords(vocab_path)
     root = ET.parse(xml_path).getroot()
     cards = list(root.iter("card"))
-    chosen: dict[str, dict] = {}
+    # One card per simplified headword plus reading, so 长 cháng and 长 zhǎng
+    # both survive. A repeated export of the same reading still collapses.
+    chosen: dict[tuple[str, str], dict] = {}
     missing_head = 0
     for card in cards:
         record = _card_record(card)
         if record is None:
             missing_head += 1
             continue
-        key = record["hanzi"]
+        key = (record["hanzi"], record["pinyin"])
         previous = chosen.get(key)
         if previous is None or _prefer(record, previous):
             chosen[key] = record
 
-    skipped = sorted(hanzi for hanzi in chosen if hanzi in lesson)
-    for hanzi in skipped:
-        del chosen[hanzi]
+    skipped_keys = [key for key in chosen if key[0] in lesson]
+    skipped = sorted({hanzi for hanzi, _pinyin in skipped_keys})
+    for key in skipped_keys:
+        del chosen[key]
 
     words = list(chosen.values())
-    words.sort(key=lambda word: (word["kind"] != "saved", word["hsk"] or 0, word["date"], word["hanzi"]))
+    words.sort(key=lambda word: (word["kind"] != "saved", word["hsk"] or 0, word["date"], word["hanzi"], word["pinyin"]))
 
     pinyin_warnings = []
     missing_pinyin = 0
@@ -608,8 +614,9 @@ def import_cards(xml_path: Path, vocab_path: Path) -> dict:
 
     counts = {
         "cards": len(cards),
-        "unique_headwords": len(chosen) + len(skipped),
-        "duplicates_dropped": len(cards) - missing_head - (len(chosen) + len(skipped)),
+        "unique_headwords": len({word["hanzi"] for word in words} | set(skipped)),
+        "unique_readings": len(words) + len(skipped_keys),
+        "duplicates_dropped": len(cards) - missing_head - len(words) - len(skipped_keys),
         "missing_headwords": missing_head,
         "skipped_lesson_words": skipped,
         "imported": len(words),

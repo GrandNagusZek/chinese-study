@@ -34,6 +34,7 @@
   function lessonRow(word) {
     var tags = word.tags || [];
     return {
+      id: word.id || ((word.hanzi || "") + "|" + (word.pinyin || "")),
       hanzi: word.hanzi || "",
       trad: "",
       pinyin: word.pinyin || "",
@@ -52,6 +53,7 @@
     var tags = word.tags || [];
     var source = word.kind === "saved" ? "saved" : "hsk";
     return {
+      id: word.id || ((word.hanzi || "") + "|" + (word.pinyin || "")),
       hanzi: word.hanzi || "",
       trad: word.traditional || "",
       pinyin: word.pinyin || "",
