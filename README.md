@@ -110,7 +110,7 @@ Field rules:
 - `date` is the day the word was added, `"YYYY-MM-DD"`.
 - `lesson` is the lesson id, unquoted if it has no special characters.
 - `tags` is a list. Reuse these when they fit: `near-synonym`, `collocation`, `complement`, `文言`. An empty list is `[]`.
-- Do not duplicate a word that is already in the file. The vocabulary table and the flashcards both read only this file.
+- Do not duplicate a word that is already in the file. A headword listed here is left out of the Pleco import.
 
 The lesson page lists every entry whose `lesson` equals its `lesson_id`, in file order.
 
@@ -139,21 +139,58 @@ Skip this when the lesson does not add a weak point. Otherwise append to `_data/
 
 ```
 _config.yml                 site title, baseurl, lesson collection
-_data/vocab.yml             every word learned so far
+_data/vocab.yml             lesson words, edited by hand
+_data/pleco.json            generated Pleco deck (do not edit by hand)
 _data/focus.yml             weak points
 _lessons/*.md               one file per lesson
+scripts/import_pleco.py     rebuild _data/pleco.json from a Pleco export
 _layouts/                   page and lesson templates
 index.html                  home: latest lesson, recent lessons, focus panel
 lessons.html                archive, newest first
-vocab.html                  sortable, filterable table
+vocab.html                  one table; lesson words and Pleco, filtered in the browser
 focus.html                  weak points
 review.html                 flashcards (progress in localStorage only)
+data/pleco.json             publishes _data/pleco.json for the browser
 assets/css/style.css
-assets/js/                  theme, table sort/filter, flashcards
+assets/js/                  theme, vocabulary table, flashcards
 .github/workflows/pages.yml build on pull requests; deploy on push to main
 ```
 
 Flashcard progress and the light/dark choice live in the browser under `zh-study-review-v1` and `zh-study-theme`. The site never receives them.
+
+## How to re-import a Pleco export
+
+Pleco words live in `_data/pleco.json`, separate from the lesson list in `_data/vocab.yml`. The vocabulary page and the flashcards load that file in the browser. The home page reads only its counts.
+
+When he exports a newer deck from Pleco (Flashcards → Export → XML):
+
+```bash
+python3 scripts/import_pleco.py path/to/export.xml
+```
+
+That rewrites `_data/pleco.json` from scratch. Commit the JSON. Do not commit the XML. The script uses only the Python standard library.
+
+What it keeps, per card:
+
+- simplified headword, and traditional when it differs
+- pinyin with tone marks (`mo4qi4` → `mòqì`, `u:`/`v` → `ü`, neutral tone `5` unmarked, `//` → `·`)
+- a short English gloss (first sense or two, part-of-speech label removed)
+- one example, when the dictionary entry has one
+- the save date, from the card’s `created` timestamp
+- tags: `pleco`, plus `HSK n` when the card is in an `HSK 2012-2018` category, or `saved` when it has no category
+
+Deduping:
+
+- a headword already in `_data/vocab.yml` is skipped
+- two Pleco cards with the same simplified headword become one card (a self-saved card wins over an HSK-list card; otherwise the earlier `created` time wins)
+
+Check the converter without an export:
+
+```bash
+python3 scripts/import_pleco.py --self-test
+```
+
+The default vocabulary view is lesson words plus self-saved Pleco cards. HSK-list cards stay behind the Pleco HSK filter, with a level switch. Flashcards default to the same pair of decks.
 
 ## Local preview
 

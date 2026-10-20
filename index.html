@@ -69,12 +69,17 @@ permalink: /
           <dd>{{ site.lessons | size }}</dd>
         </div>
         <div>
-          <dt>生词</dt>
-          <dd>{{ site.data.vocab | size }}</dd>
-        </div>
-        <div>
           <dt>薄弱点</dt>
           <dd>{{ active_focus | size }}</dd>
+        </div>
+        <div>
+          <dt>课文生词</dt>
+          <dd><a href="{{ '/vocab/' | relative_url }}">{{ site.data.vocab | size }}</a></dd>
+        </div>
+        <div>
+          <dt>Pleco</dt>
+          <dd><a href="{{ '/vocab/' | relative_url }}">{{ site.data.pleco.counts.imported }}</a></dd>
+          <p class="stat-note">自存 {{ site.data.pleco.counts.saved }} · HSK {{ site.data.pleco.counts.hsk }}</p>
         </div>
       </dl>
     </section>

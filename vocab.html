@@ -4,81 +4,74 @@ title: 词汇
 permalink: /vocab/
 script: vocab
 ---
-{% assign words = site.data.vocab | sort: "date" | reverse %}
-{% assign tag_blob = "" %}
-{% for word in site.data.vocab %}
-  {% for tag in word.tags %}
-    {% assign tag_blob = tag_blob | append: tag | append: "|" %}
-  {% endfor %}
-{% endfor %}
-{% assign tag_list = tag_blob | split: "|" | uniq | sort %}
-
 <header class="page-head">
   <h1>词汇</h1>
-  <p class="summary">到目前为止的生词，都在 <code>_data/vocab.yml</code>。点表头可以排序，拼音搜索可以不带声调。</p>
+  <p class="summary">默认是课文生词和他自己存的 Pleco 词。HSK 词表在筛选里打开。拼音搜索可以不带声调。</p>
 </header>
 
 <div class="vocab-tools">
   <label class="search-label" for="vocab-search">搜索</label>
   <input id="vocab-search" type="search" placeholder="汉字、拼音或英文" autocomplete="off">
-  <div class="tag-filters" role="group" aria-label="按标签筛选">
-    <button type="button" data-tag="all" aria-pressed="true">全部</button>
-    {% for tag in tag_list %}
-      {% if tag != "" %}
-      <button type="button" data-tag="{{ tag }}" aria-pressed="false">{{ tag }}</button>
-      {% endif %}
-    {% endfor %}
+  <div class="tag-filters" role="group" aria-label="来源">
+    <button type="button" data-source="lesson" aria-pressed="true">课文</button>
+    <button type="button" data-source="saved" aria-pressed="true">Pleco 自存</button>
+    <button type="button" data-source="hsk" aria-pressed="false">Pleco HSK</button>
   </div>
-  <p class="vocab-count" id="vocab-count" aria-live="polite">{{ words | size }} / {{ words | size }}</p>
+  <div class="tag-filters" id="hsk-levels" role="group" aria-label="HSK 级别" hidden>
+    <button type="button" data-level="1" aria-pressed="true">HSK 1</button>
+    <button type="button" data-level="2" aria-pressed="true">HSK 2</button>
+    <button type="button" data-level="3" aria-pressed="true">HSK 3</button>
+    <button type="button" data-level="4" aria-pressed="true">HSK 4</button>
+    <button type="button" data-level="5" aria-pressed="true">HSK 5</button>
+    <button type="button" data-level="6" aria-pressed="true">HSK 6</button>
+  </div>
+  <p class="vocab-count" id="vocab-count" aria-live="polite">正在载入…</p>
 </div>
 
 <div class="table-scroll">
   <table id="vocab-table">
-    <caption class="visually-hidden">全部生词</caption>
+    <caption class="visually-hidden">生词</caption>
     <thead>
       <tr>
         <th scope="col"><button type="button" data-sort="hanzi">汉字</button></th>
+        <th scope="col"><button type="button" data-sort="trad">繁体</button></th>
         <th scope="col"><button type="button" data-sort="pinyin">拼音</button></th>
         <th scope="col"><button type="button" data-sort="gloss">意思</button></th>
         <th scope="col"><button type="button" data-sort="date">日期</button></th>
-        <th scope="col"><button type="button" data-sort="lesson">课文</button></th>
-        <th scope="col"><button type="button" data-sort="tags">标签</button></th>
+        <th scope="col"><button type="button" data-sort="source">来源</button></th>
       </tr>
     </thead>
-    <tbody>
-      {% for word in words %}
-      {% assign lesson_page = site.lessons | where: "lesson_id", word.lesson | first %}
-      {% assign tag_text = word.tags | join: " " %}
-      {% assign search = word.hanzi | append: " " | append: word.pinyin | append: " " | append: word.gloss | append: " " | append: word.example | append: " " | append: tag_text %}
-      <tr
-        data-hanzi="{{ word.hanzi | escape }}"
-        data-pinyin="{{ word.pinyin | escape }}"
-        data-gloss="{{ word.gloss | escape }}"
-        data-date="{{ word.date | escape }}"
-        data-lesson="{{ word.lesson | escape }}"
-        data-tags="{{ word.tags | join: '|' | escape }}"
-        data-search="{{ search | escape }}">
-        <td class="hanzi">{{ word.hanzi }}</td>
-        <td class="pinyin">{{ word.pinyin }}</td>
-        <td lang="en">{{ word.gloss }}</td>
-        <td class="num">{{ word.date }}</td>
-        <td>
-          {% if lesson_page %}
-          <a href="{{ lesson_page.url | relative_url }}">{{ lesson_page.title }}</a>
-          {% else %}
-          {{ word.lesson }}
-          {% endif %}
-        </td>
-        <td>
-          {% if word.tags.size > 0 %}
-          <ul class="tags">
-            {% for tag in word.tags %}<li>{{ tag }}</li>{% endfor %}
-          </ul>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
+    <tbody id="vocab-body"></tbody>
   </table>
 </div>
+<nav class="pager" id="vocab-pager" aria-label="翻页" hidden>
+  <button type="button" class="secondary" id="page-prev">上一页</button>
+  <span id="page-status"></span>
+  <button type="button" class="secondary" id="page-next">下一页</button>
+</nav>
 <p class="empty" id="vocab-empty" hidden>没有符合的生词。</p>
+<p class="empty" id="vocab-status"></p>
+
+<script id="vocab-boot" type="application/json">
+{
+  "pleco": {{ '/data/pleco.json' | relative_url | jsonify }},
+  "words": {{ site.data.vocab | jsonify | replace: "<", "\u003c" }},
+  "lessons": {
+    {% for lesson in site.lessons %}
+    {{ lesson.lesson_id | jsonify }}: {
+      "title": {{ lesson.title | jsonify | replace: "<", "\u003c" }},
+      "url": {{ lesson.url | relative_url | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  }
+}
+</script>
+
+<noscript>
+  <p class="empty">筛选和 Pleco 词库需要 JavaScript。课文生词：</p>
+  <ul>
+    {% for word in site.data.vocab %}
+    <li><span class="hanzi">{{ word.hanzi }}</span> <span class="pinyin">{{ word.pinyin }}</span> {{ word.gloss }}</li>
+    {% endfor %}
+  </ul>
+</noscript>

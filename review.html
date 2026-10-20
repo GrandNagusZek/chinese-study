@@ -18,7 +18,7 @@ script: review
   <p class="summary">汉字和意思两个方向。认识与否只记在这台浏览器的 localStorage 里，换一台电脑就没有了。</p>
 </header>
 
-<section class="review" id="review-app">
+<section class="review" id="review-app" data-pleco="{{ '/data/pleco.json' | relative_url }}">
   <div class="review-toolbar">
     <label>方向
       <select id="review-dir">
@@ -26,9 +26,21 @@ script: review
         <option value="gloss">看意思，写汉字</option>
       </select>
     </label>
-    <label>范围
+    <label>牌组
       <select id="review-scope">
-        <option value="all">全部生词</option>
+        <option value="default">课文 + Pleco 自存</option>
+        <option value="lesson">课文生词</option>
+        <option value="saved">Pleco 自存</option>
+        <optgroup label="Pleco HSK">
+          <option value="hsk:1">HSK 1</option>
+          <option value="hsk:2">HSK 2</option>
+          <option value="hsk:3">HSK 3</option>
+          <option value="hsk:4">HSK 4</option>
+          <option value="hsk:5">HSK 5</option>
+          <option value="hsk:6">HSK 6</option>
+          <option value="hsk">HSK 全部</option>
+        </optgroup>
+        <option value="all">全部</option>
         {% if ordered.size > 0 %}
         <optgroup label="按课文">
           {% for lesson in ordered %}
@@ -37,7 +49,7 @@ script: review
         </optgroup>
         {% endif %}
         {% if tag_list.size > 0 %}
-        <optgroup label="按标签">
+        <optgroup label="按课文标签">
           {% for tag in tag_list %}
             {% if tag != "" %}
             <option value="tag:{{ tag }}">{{ tag }}</option>

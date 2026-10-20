@@ -28,6 +28,9 @@ jobs:
           ruby-version: "3.2"
           bundler-cache: true
 
+      - name: Check Pleco importer
+        run: python3 scripts/import_pleco.py --self-test
+
       - name: Build site
         run: bundle exec jekyll build
 

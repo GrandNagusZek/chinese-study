@@ -5,3 +5,7 @@ _site/
 .bundle/
 vendor/
 *.gem
+__pycache__/
+*.pyc
+# Pleco XML exports stay local. Commit the generated _data/pleco.json instead.
+imports/
