@@ -98,3 +98,131 @@
   date: "2026-10-18"
   lesson: "2026-10-18-warmup"
   tags: []
+
+- hanzi: "淡泊"
+  pinyin: "dànbó"
+  gloss: "to care little for fame, wealth, or personal gain"
+  example: "他淡泊名利，更看重陪伴家人。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["collocation", "文言"]
+
+- hanzi: "明志"
+  pinyin: "míngzhì"
+  gloss: "to clarify or express one's aspirations (literary)"
+  example: "他通过这篇文章明志，表达了投身教育的决心。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["文言"]
+
+- hanzi: "交织"
+  pinyin: "jiāozhī"
+  gloss: "to intertwine, often of emotions or circumstances"
+  example: "毕业时，喜悦与不舍交织在一起。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["near-synonym"]
+
+- hanzi: "裂缝"
+  pinyin: "lièfèng"
+  gloss: "a crack; a rift in a relationship or system"
+  example: "这次争执让两人的关系出现了裂缝。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: []
+
+- hanzi: "摩擦"
+  pinyin: "mócā"
+  gloss: "friction; interpersonal tension short of an open clash"
+  example: "合作中难免会有一些摩擦。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["near-synonym"]
+
+- hanzi: "冗余"
+  pinyin: "rǒngyú"
+  gloss: "redundancy; unnecessary or excess elements"
+  example: "我们需要简化流程，减少冗余的步骤。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: []
+
+- hanzi: "底气"
+  pinyin: "dǐqì"
+  gloss: "confidence grounded in preparation, ability, or backing"
+  example: "提前做好准备，说话才有底气。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["near-synonym"]
+
+- hanzi: "紧迫感"
+  pinyin: "jǐnpògǎn"
+  gloss: "a sense of urgency"
+  example: "截止日期快到了，我开始有了紧迫感。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: []
+
+- hanzi: "波澜"
+  pinyin: "bōlán"
+  gloss: "waves; figurative emotional upheaval"
+  example: "听到这个消息，她内心泛起了波澜。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["collocation"]
+
+- hanzi: "预设"
+  pinyin: "yùshè"
+  gloss: "to assume or set something beforehand"
+  example: "先听听他的解释，不要预设他是故意的。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["collocation"]
+
+- hanzi: "不破不立"
+  pinyin: "bù pò bù lì"
+  gloss: "without tearing the old down, the new cannot be established"
+  example: "有时候，改革需要不破不立的勇气。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["文言"]
+
+- hanzi: "乱中取胜"
+  pinyin: "luàn zhōng qǔ shèng"
+  gloss: "to succeed amid disorder"
+  example: "面对突发情况，团队保持冷静，最终乱中取胜。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: []
+
+- hanzi: "硬骨头"
+  pinyin: "yìng gǔtou"
+  gloss: "a tough problem or task; 啃硬骨头 is to work through it"
+  example: "这个项目是块硬骨头，得花时间慢慢啃。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["collocation"]
+
+- hanzi: "守当下"
+  pinyin: "shǒu dāngxià"
+  gloss: "to stay with the present; more literary than 专注当下"
+  example: "与其担心明年的事，不如先守住当下，把今天过好。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["near-synonym"]
+
+- hanzi: "打击对方"
+  pinyin: "dǎjī duìfāng"
+  gloss: "to put the other person down, or to strike an opponent"
+  example: "有不同意见可以讨论，没必要用难听的话打击对方。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["collocation"]
+
+- hanzi: "承担压力"
+  pinyin: "chéngdān yālì"
+  gloss: "to shoulder pressure or a burden"
+  example: "家庭的压力不应该由一个人承担。"
+  date: "2026-11-08"
+  lesson: "2026-11-08-fortune-reading"
+  tags: ["collocation"]
